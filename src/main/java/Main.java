@@ -6,6 +6,8 @@ public class Main {
 //        System.out.println(dogApi.getListSubBreed("hound"));
 //        System.out.println(dogApi.getRandomSubBreed("hound", "afghan"));
         dogApi.uploadImageToDisk("hound");
+        YandexDiskUpload yandexDiskUpload = new YandexDiskUpload();
+        yandexDiskUpload.uploadFile("test");
 
 
 

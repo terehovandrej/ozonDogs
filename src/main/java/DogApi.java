@@ -38,7 +38,7 @@ public class DogApi {
             // Парсинг ответа в JSON
             JSONObject jsonResponse = new JSONObject(response.toString());
 
-            // Извлечение ссылки на изображение
+            // Извлечение ссылки на изображениеya
 
             return jsonResponse.getString("message");
         } catch (Exception e) {
