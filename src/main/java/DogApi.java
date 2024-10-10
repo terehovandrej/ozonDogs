@@ -7,14 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DogApi {
-    public void uploadImageToDisk(String breed) {
+    public void uploadImageToDisk(String breed)  {
+        YandexApi yandexApi = new YandexApi();
         JSONArray listSubBreed = getListSubBreed(breed);
         if (listSubBreed.length() > 0) {
+
             for (Object subBreed : listSubBreed) {
-                System.out.println(getRandomSubBreed(breed, subBreed.toString()));
+                yandexApi.uploadFile(getRandomSubBreed(breed, subBreed.toString()), String.format("%s-%s", breed, subBreed));
+
             }
         }  else if (getRandomBreed(breed) != null) {
-            System.out.println(getRandomBreed(breed));
+            yandexApi.uploadFile(getRandomBreed(breed), breed);
 
         } else
             System.out.println("ничего не загружено");
