@@ -2,35 +2,33 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 public class DogApiTest extends TestBase {
 
     @DisplayName("Загрузка нескольких картинок, когда у породы есть подпопороды")
     @Test
     void testUploadSubbreeds() {
-        List<String> expectedResult = Arrays.asList("hound-afghan", "hound-basset", "hound-blood", "hound-english", "hound-ibizan", "hound-plott", "hound-walker");
+        Set<String> expectedResult = Set.of("hound-afghan", "hound-basset", "hound-blood", "hound-english", "hound-ibizan", "hound-plott", "hound-walker");
         dogApi.uploadImageToDisk("hound");
-        List<String> factResult = yandexApi.getListAllFiles();
+        Set<String> factResult = yandexApi.getSetAllFiles();
         Assertions.assertEquals(expectedResult, factResult);
     }
     @DisplayName("Загрузка одной картинки, когда у породы нет подпопороды")
     @Test
     void testUploadBreed() {
-        List<String> expectedResult = Collections.singletonList("pitbull");
+        Set<String> expectedResult = Set.of("pitbull");
         dogApi.uploadImageToDisk("pitbull");
-        List<String> factResult = yandexApi.getListAllFiles();
+        Set<String> factResult = yandexApi.getSetAllFiles();
         Assertions.assertEquals(expectedResult, factResult);
     }
 
     @DisplayName("Загрузка одной картинки, когда у породы только одна подпопорода")
     @Test
     void testUploadSingleSubBreed() {
-        List<String> expectedResult = Collections.singletonList("dane-great");
+        Set<String> expectedResult = Set.of("dane-great");
         dogApi.uploadImageToDisk("dane");
-        List<String> factResult = yandexApi.getListAllFiles();
+        Set<String> factResult = yandexApi.getSetAllFiles();
         Assertions.assertEquals(expectedResult, factResult);
     }
 
@@ -38,7 +36,7 @@ public class DogApiTest extends TestBase {
     @Test
     void testNothingUpload() {
         dogApi.uploadImageToDisk("catdog");
-        List<String> factResult = yandexApi.getListAllFiles();
+        Set<String> factResult = yandexApi.getSetAllFiles();
         Assertions.assertEquals(0 , factResult.size());
     }
 }

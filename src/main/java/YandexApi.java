@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class YandexApi {
     private final String oauthToken = System.getenv().get("token");
@@ -36,8 +38,8 @@ public class YandexApi {
             System.err.println("Ошибка: " + e.getMessage());
         }
     }
-    public List<String> getListAllFiles() {
-        List<String> result = new ArrayList<>();
+    public Set<String> getSetAllFiles() {
+        Set<String> result = new HashSet<>();
         try {
             // Строка запроса
             String requestUrl = "https://cloud-api.yandex.net/v1/disk/resources/files";
@@ -96,8 +98,34 @@ public class YandexApi {
             System.err.println("Ошибка: " + e.getMessage());
         }
     }
+
+    public void clearTrash() {
+        try {
+            // Строка запроса
+            String requestUrl = "https://cloud-api.yandex.net/v1/disk/trash/resources";
+            // Запрос к API
+            URL urlObj = new URL(requestUrl);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Authorization", "OAuth " + oauthToken);
+
+            // Получение ответа
+            if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
+            if (connection.getResponseCode() == 202) {
+                System.out.println("корзина успешно очищена.");
+            } else {
+                System.err.println("Ошибка при очистке корзины ");
+            }
+
+
+        } catch (Exception e) {
+            System.err.println("Ошибка: " + e.getMessage());
+        }
+    }
     public void deleteAllFilesFromDisk() {
-        for (String file: getListAllFiles()
+        for (String file: getSetAllFiles()
              ) {deleteResource(file);
         }
     }
