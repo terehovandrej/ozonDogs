@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YandexApi {
-
+    private final String oauthToken = System.getenv().get("token");
     public void uploadFile(String url, String filename) {
-        String oauthToken = System.getenv().get("token");
-
         try {
             // Строка запроса
             String requestUrl = "https://cloud-api.yandex.net/v1/disk/resources/upload?path=" + filename + "&url=" + url;
@@ -25,6 +23,7 @@ public class YandexApi {
             connection.setRequestProperty("Authorization", "OAuth " + oauthToken);
 
             // Получение ответа
+            if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
             if (connection.getResponseCode() == 202) {
                 System.out.println("Изображение " + url + " успешно загружено.");
             } else {
@@ -39,8 +38,6 @@ public class YandexApi {
     }
     public List<String> getListAllFiles() {
         List<String> result = new ArrayList<>();
-        String oauthToken = "y0_AgAAAAAMT6B7AADLWwAAAAET1hWbAAAqiG1K3-FJhZmnDfR49Ic4GbA5Mg";
-
         try {
             // Строка запроса
             String requestUrl = "https://cloud-api.yandex.net/v1/disk/resources/files";
@@ -69,13 +66,12 @@ public class YandexApi {
                 result.add(item.getName());
             }
         } catch (Exception e) {
+            if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
             System.err.println("Ошибка: " + e.getMessage());
         }
         return result;
     }
     public void deleteResource(String resource) {
-        String oauthToken = System.getenv().get("token");
-        if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
         try {
             // Строка запроса
             String requestUrl = "https://cloud-api.yandex.net/v1/disk/resources/?path=" + resource;
@@ -88,6 +84,7 @@ public class YandexApi {
             connection.setRequestProperty("Authorization", "OAuth " + oauthToken);
 
             // Получение ответа
+            if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
             if (connection.getResponseCode() == 204) {
                 System.out.println( resource + " успешно удален.");
             } else {
