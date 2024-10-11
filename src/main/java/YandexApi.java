@@ -1,6 +1,5 @@
 import com.google.gson.Gson;
 import dto.Items;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,7 +11,7 @@ import java.util.List;
 public class YandexApi {
 
     public void uploadFile(String url, String filename) {
-        String oauthToken = "y0_AgAAAAAMT6B7AADLWwAAAAET1hWbAAAqiG1K3-FJhZmnDfR49Ic4GbA5Mg";
+        String oauthToken = System.getenv().get("token");
 
         try {
             // Строка запроса
@@ -75,8 +74,8 @@ public class YandexApi {
         return result;
     }
     public void deleteResource(String resource) {
-        String oauthToken = "y0_AgAAAAAMT6B7AADLWwAAAAET1hWbAAAqiG1K3-FJhZmnDfR49Ic4GbA5Mg";
-
+        String oauthToken = System.getenv().get("token");
+        if (oauthToken == null) System.err.println("Нужно присвоить токен в переменных окружения");
         try {
             // Строка запроса
             String requestUrl = "https://cloud-api.yandex.net/v1/disk/resources/?path=" + resource;
@@ -94,7 +93,6 @@ public class YandexApi {
             } else {
                 System.err.println("Ошибка при удалении " + resource);
             }
-            Thread.sleep(1000);
 
 
         } catch (Exception e) {
